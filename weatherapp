@@ -1,0 +1,47 @@
+import requests
+from bs4 import BeautifulSoup
+from tkinter import Label
+from tkinter import Tk
+from PIL import ImageTk, Image
+
+url = "https://weather.com/weather/today/l/89a44955d17cee32d98d6d5f74f43e90274c3d8434434d3e7c8cfd7d8cf5bc0c"
+
+master = Tk()
+master.title("Weather App")
+master.config(bg = "white")
+
+img = Image.open("logo.png")
+img = img.resize((150,150))
+img = ImageTk.PhotoImage(img)
+
+def getWeather():
+   page = requests.get(url)
+   soup = BeautifulSoup(page.content, "html.parser")
+   location = soup.find('h1',class="CurrentConditions--location--1Ayv3").text
+   temperature = soup.find('span',class="CurrentConditions--tempValue--3KcTQ").text
+   weatherPrediction = soup.find('div',class="CurrentConditions--phraseValue--2xXSr").text
+
+   locationLabel.config(text=location)
+   temperatureLabel.config(text=temperature)
+   weatherPrediction.config(text=weatherPrediction)
+
+   temperatureLabel.after(60000,getWeather)
+   master.update()
+
+
+
+locationLabel = Label(master,font=("Times New Roman",20),bg="white")
+locationLabel.grid(row=0,sticky="N",padx=100)
+temperatureLabel = Label(master,font=("Times New Roman",20),bg="white")
+temperatureLabel.grid(row=0,sticky="W",padx=40)
+Label(master, image=img,bg="white").grid(row=1,sticky="E")
+weatherPredictionLabel = Label(master,font=("Times New Roman",15))
+weatherPredictionLabel.grid(row=2,sticky="W",padx=40)
+
+
+
+
+
+
+
+master.mainloop()
