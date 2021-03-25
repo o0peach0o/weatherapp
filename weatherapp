@@ -8,9 +8,9 @@ url = "https://weather.com/weather/today/l/89a44955d17cee32d98d6d5f74f43e90274c3
 
 master = Tk()
 master.title("Weather App")
-master.config(bg = "white")
+master.config(bg = "#0ABAB5")
 
-img = Image.open("logo.png")
+
 img = img.resize((150,150))
 img = ImageTk.PhotoImage(img)
 
@@ -19,6 +19,10 @@ def getWeather():
    soup = BeautifulSoup(page.content, "html.parser")
    location = soup.find('h1',class="CurrentConditions--location--1Ayv3").text
    temperature = soup.find('span',class="CurrentConditions--tempValue--3KcTQ").text
+      if tempurature < 30:
+         img = Image.open("winter.png")
+      else:
+         img = Image.open("summer.png")
    weatherPrediction = soup.find('div',class="CurrentConditions--phraseValue--2xXSr").text
 
    locationLabel.config(text=location)
@@ -30,11 +34,11 @@ def getWeather():
 
 
 
-locationLabel = Label(master,font=("Times New Roman",20),bg="white")
+locationLabel = Label(master,font=("Times New Roman",20),bg="#0ABAB5")
 locationLabel.grid(row=0,sticky="N",padx=100)
-temperatureLabel = Label(master,font=("Times New Roman",20),bg="white")
+temperatureLabel = Label(master,font=("Times New Roman",20),bg="#0ABAB5")
 temperatureLabel.grid(row=0,sticky="W",padx=40)
-Label(master, image=img,bg="white").grid(row=1,sticky="E")
+Label(master, image=img,bg="#0ABAB5").grid(row=1,sticky="E")
 weatherPredictionLabel = Label(master,font=("Times New Roman",15))
 weatherPredictionLabel.grid(row=2,sticky="W",padx=40)
 
